@@ -1,0 +1,208 @@
+basePath: /v1
+definitions:
+  errs.Handling:
+    properties:
+      error:
+        type: string
+      message:
+        type: string
+    type: object
+  models.Authors:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  models.AuthorsResultSet:
+    properties:
+      authors:
+        items:
+          $ref: '#/definitions/models.Authors'
+        type: array
+      pagination:
+        $ref: '#/definitions/models.Pagination'
+    type: object
+  models.Book:
+    properties:
+      authors:
+        items:
+          type: integer
+        type: array
+      edition:
+        type: integer
+      id:
+        type: integer
+      name:
+        type: string
+      publication_year:
+        type: integer
+    type: object
+  models.Pagination:
+    properties:
+      pages:
+        type: integer
+      total:
+        type: integer
+    type: object
+info:
+  contact:
+    email: luccaa.chagas23@gmail.com
+    name: Luccas Machado
+    url: linkedin
+  description: API Documentation
+  title: Dialog-Interview Swagger API
+  version: "1.0"
+paths:
+  /authors/:name:
+    get:
+      consumes:
+      - application/json
+      description: get []models.Authors
+      parameters:
+      - description: Author Name
+        in: path
+        name: name
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Authors'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errs.Handling'
+      summary: Get authors by Name
+      tags:
+      - Authors
+  /authors/:page:
+    get:
+      consumes:
+      - application/json
+      description: get models.AuthorsResultSet
+      parameters:
+      - description: Pagination item
+        in: path
+        name: page
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.AuthorsResultSet'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errs.Handling'
+      summary: Show all authors or filter by Page
+      tags:
+      - Authors
+  /books/create:
+    post:
+      consumes:
+      - application/json
+      description: POST models.Book
+      parameters:
+      - description: Book
+        in: body
+        name: Book
+        required: true
+        schema:
+          $ref: '#/definitions/models.Book'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errs.Handling'
+      summary: Create new Books
+      tags:
+      - Books
+  /books/read:
+    get:
+      consumes:
+      - application/json
+      description: GET models.Book
+      parameters:
+      - description: Book Name
+        in: path
+        name: name
+        type: string
+      - description: Book Edition
+        in: path
+        name: edition
+        type: string
+      - description: Book Publication_Year
+        in: path
+        name: publication_year
+        type: string
+      - description: Book Author ID
+        in: path
+        name: author
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errs.Handling'
+      summary: Get Books
+      tags:
+      - Books
+  /books/update:
+    delete:
+      consumes:
+      - application/json
+      description: DELETE models.Book
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errs.Handling'
+      summary: Delete Books
+      tags:
+      - Books
+    put:
+      consumes:
+      - application/json
+      description: PUT models.Book
+      parameters:
+      - description: Book
+        in: body
+        name: Book
+        required: true
+        schema:
+          $ref: '#/definitions/models.Book'
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errs.Handling'
+      summary: Update Books
+      tags:
+      - Books
+swagger: "2.0"
